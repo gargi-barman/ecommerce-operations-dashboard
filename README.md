@@ -30,7 +30,7 @@ Built as part of my transition into Operations Analytics.
 ## Skills Demonstrated
 - Data Cleaning: TRIM, PROPER, IF
 - Calculated Columns: TAT (days), OTD Flag
-- Formulas: COUNTIF, AVERAGEIF, nested IF
+- Formulas: COUNTA, COUNTIF, AVERAGEIF, nested IF
 - PivotTables & PivotCharts
 - KPI Dashboard design in Excel
 
