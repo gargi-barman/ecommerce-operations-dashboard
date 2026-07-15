@@ -34,20 +34,20 @@ Built as part of my transition into Operations Analytics.
 
 ## Key Insights & Recommendations
 
-**1. Order volume grew steadily — from 293 orders (2016) to 47,899 orders (2018).**
+**1. Order volume grew steadily from 293 orders (2016) to 47,899 orders (2018).**
 Recommendation: With volume scaling this fast, it's worth checking whether fulfillment capacity (staffing, warehouse throughput) scaled at the same pace — rapid growth without matching capacity is often where delivery performance starts slipping.
 
 **2. Most of the improvement in delivery speed happened between 2016 and 2017.** Average TAT dropped from 18.91 days (2016) to 12.35 days (2017), then only slightly further to 11.61 days (2018).
-Recommendation: Identify what specific operational change drove the 2016→2017 improvement, and check if it's repeatable. The much smaller 2017→2018 gain suggests the earlier fix may have been a one-time change rather than a sustained process improvement — worth confirming before assuming performance will keep improving on its own.
+Recommendation: Identify what specific operational change drove the 2016 to 2017 improvement, and check if it's repeatable. The much smaller 2017 to 2018 gain suggests the earlier fix may have been a one-time change rather than a sustained process improvement - worth confirming before assuming performance will keep improving on its own.
 
 **3. 90.3% of delivered orders were On Time.**
 Recommendation: This is a strong headline number, but it's worth pairing with the Tier findings below before treating it as the full picture of delivery performance (see Insight 5).
 
-**4. Cancellation rate is unusually low at 0.46% (409 of 89,316 orders).** Typical e-commerce cancellation benchmarks run 2–5%, so 0.46% stands out. The likely explanation isn't that this business rarely has problem orders — it's that this dataset's "Cancelled" status is probably a narrow category. Returns, failed deliveries, or orders lost in transit may be tracked under a different status entirely (or not captured at all in this dataset), meaning the true rate of "orders that didn't go as planned" is probably higher than 0.46% suggests.
+**4. Cancellation rate is unusually low at 0.46% (409 of 89,316 orders).** Typical e-commerce cancellation benchmarks run 2-5%, so 0.46% stands out. The likely explanation isn't that this business rarely has problem orders - it's that this dataset's "Cancelled" status is probably a narrow category. Returns, failed deliveries, or orders lost in transit may be tracked under a different status entirely (or not captured at all in this dataset), meaning the true rate of "orders that didn't go as planned" is probably higher than 0.46% suggests.
 Recommendation: Before using this number in any real reporting, confirm what "Cancelled" actually excludes. If returns and failed deliveries aren't captured here, cancellation rate alone understates operational risk — a more complete "problem order rate" metric would need to combine Cancelled + Late + Not Delivered.
 
-**5. Delivery Tier reveals a gap the OTD% number hides.** Despite a 90.3% on-time rate, 44.8% of all orders (40,001) fall into the Slow tier (11+ days), with 33.4% (29,840) Medium and only 19.7% (17,586) Fast. This isn't a data error — OTD and Tier are answering two different questions. OTD asks "did we deliver by the date we promised the customer." Tier asks "how many actual days did this take, judged against a fixed internal standard for what counts as fast." An order can clear a generous promise (On Time) while still performing poorly by an absolute speed standard (Slow tier).
-Recommendation: Investigate how `Order_estimated_delivery_date` is set. If promises are being set loosely enough that mediocre fulfillment still counts as "on time," OTD% alone isn't a reliable signal of real operational speed — it mainly measures whether the company kept its word, not whether it performed well. A tighter, more honest estimate would surface the real performance gap that's currently hidden.
+**5. Delivery Tier reveals a gap the OTD% number hides.** Despite a 90.3% on-time rate, 44.8% of all orders (40,001) fall into the Slow tier (11+ days), with 33.4% (29,840) Medium and only 19.7% (17,586) Fast. This isn't a data error. OTD and Tier are answering two different questions. OTD asks "did we deliver by the date we promised the customer." Tier asks "how many actual days did this take, judged against a fixed internal standard for what counts as fast." An order can clear a generous promise (On Time) while still performing poorly by an absolute speed standard (Slow tier).
+Recommendation: Investigate how `Order_estimated_delivery_date` is set. If promises are being set loosely enough that mediocre fulfillment still counts as "on time," OTD% alone isn't a reliable signal of real operational speed, it mainly measures whether the company kept its word, not whether it performed well. A tighter, more honest estimate would surface the real performance gap that's currently hidden.
 
 ---
 
@@ -59,15 +59,13 @@ Recommendation: Investigate how `Order_estimated_delivery_date` is set. If promi
 - Date Functions: NETWORKDAYS
 - Text Functions: TEXTJOIN
 - Formulas: COUNTA, COUNTIF, AVERAGEIF, nested IF
-- Power Query (Get & Transform): data type correction, filtering, trimming, text standardization, value replacement, column renaming — full transformation pipeline from raw import
+- Power Query (Get & Transform): data type correction, filtering, trimming, text standardization, value replacement, column renaming - full transformation pipeline from raw import
 - PivotTables & PivotCharts
 - KPI Dashboard design in Excel
 
 ---
 
 ## Project Walkthrough
-
-### Step 1 — Data Cleaning
 
 ### Step 1 — Data Cleaning
 
@@ -81,7 +79,7 @@ Applied TRIM on Order ID and Customer ID. Used PROPER on Order Status. Added TAT
 
 ](/gargi-barman/ecommerce-operations-dashboard/blob/main/Cleaned_Data.png)
 
-**After (v2) — added Delivery_Tier and TAT_business_days columns:**
+**After (v2) — added Tier and TAT_business_days columns:**
 
 [
 
@@ -91,12 +89,11 @@ Applied TRIM on Order ID and Customer ID. Used PROPER on Order Status. Added TAT
 
 ### Step 2 — Delivery Speed Tier (INDEX-MATCH) & Business-Day TAT (NETWORKDAYS)
 
-Built a reference table (Fast / Medium / Slow, based on TAT thresholds) and used INDEX-MATCH with approximate match (match_type 1) to classify every order into a delivery speed tier. **This reference table is an assumption built for this analysis — it is not part of the original dataset.** Also added a `TAT_business_days` column using NETWORKDAYS to measure delivery time excluding weekends, as a complement to the calendar-day TAT_days column.
+Built a reference table (Fast / Medium / Slow, based on TAT thresholds) and used INDEX-MATCH with approximate match (match_type 1) to classify every order into a delivery speed tier. **This reference table is an assumption built for this analysis — it is not part of the original dataset.** Also added a `TAT_business_days` column using NETWORKDAYS to measure delivery time excluding weekends, as a complement to the calendar-day TAT_days column. (See file named Cleaned_Data_Updated.png).
 
 ### Step 3 — Order Summary View (TEXTJOIN)
 
-Built a separate `Order_Summary` sheet combining Order ID, Status, and Tier into a single readable line per order — a compact, scannable export view rather than a column bolted onto the working data table.
-
+Built a separate `Order_Summary` sheet combining Order ID, Status, and Tier into a single readable line per order.
 [
 
 ![Order Summary](https://github.com/gargi-barman/ecommerce-operations-dashboard/raw/main/Order_Summary.png)
@@ -131,7 +128,7 @@ Built three PivotTables: Monthly Order Volume, OTD Flag Summary, Average TAT by 
 
 ### Step 6 — KPI Dashboard
 
-Complete dashboard with 5 KPI cards and 3 charts — Monthly Order Volume (line chart), OTD Flag Breakdown (column chart), Average TAT by Year (column chart).
+Complete dashboard with 5 KPI cards and 3 charts - Monthly Order Volume (line chart), OTD Flag Breakdown (column chart), Average TAT by Year (column chart).
 
 [
 
@@ -143,7 +140,7 @@ Complete dashboard with 5 KPI cards and 3 charts — Monthly Order Volume (line 
 
 ## Assumptions & Notes
 
-- The Delivery Speed Tier reference table (Fast: 0–5 days, Medium: 6–10 days, Slow: 11+ days) is an assumption built for this analysis to enable INDEX-MATCH classification — it is not part of the original Kaggle dataset.
+- The Delivery Speed Tier reference table (Fast: 0-5 days, Medium: 6-10 days, Slow: 11+ days) is an assumption built for this analysis to enable INDEX-MATCH classification - it is not part of the original Kaggle dataset.
 - The cancellation rate (0.46%) reflects this dataset's own status definitions and likely does not capture returns or failed deliveries separately.
 
 ---
