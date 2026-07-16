@@ -54,7 +54,7 @@ Recommendation: Investigate how `Order_estimated_delivery_date` is set. If promi
 ## Skills Demonstrated
 
 - Data Cleaning: TRIM, PROPER, IF
-- Calculated Columns: TAT (days), OTD Flag, Delivery Speed Tier, Business-Day TAT
+- Calculated Columns: TAT (days), OTD Flag, Tier, TAT_business-days
 - Lookup Functions: INDEX-MATCH (approximate match) for tier classification
 - Date Functions: NETWORKDAYS
 - Text Functions: TEXTJOIN
@@ -71,7 +71,7 @@ Recommendation: Investigate how `Order_estimated_delivery_date` is set. If promi
 
 Applied TRIM on Order ID and Customer ID. Used PROPER on Order Status. Added TAT_days and OTD_flag calculated columns using nested IF formulas.
 
-*Two more calculated columns — Delivery_Tier and TAT_business_days — were added later; see Step 2 below.*
+*Two more calculated columns — Tier and TAT_business-days — were added later; see Step 2 below.*
 
 [
 
@@ -81,11 +81,11 @@ Applied TRIM on Order ID and Customer ID. Used PROPER on Order Status. Added TAT
 
 ### Step 2 — Delivery Speed Tier (INDEX-MATCH) & Business-Day TAT (NETWORKDAYS)
 
-Built a reference table (Fast / Medium / Slow, based on TAT thresholds) and used INDEX-MATCH with approximate match (match_type 1) to classify every order into a delivery speed tier. **This reference table is an assumption built for this analysis — it is not part of the original dataset.** Also added a `TAT_business_days` column using NETWORKDAYS to measure delivery time excluding weekends, as a complement to the calendar-day TAT_days column.
+Built a reference table (Fast / Medium / Slow, based on TAT thresholds) and used INDEX-MATCH with approximate match (match_type 1) to classify every order into a delivery speed tier under column `Tier`. **This reference table is an assumption built for this analysis — it is not part of the original dataset.** Also added a `TAT_business_days` column using NETWORKDAYS to measure delivery time excluding weekends, as a complement to the calendar-day TAT_days column.
 
 [
 
-![Cleaned Data with Delivery Tier and Business-Day TAT](https://github.com/gargi-barman/ecommerce-operations-dashboard/raw/main/Cleaned_Data_Updated.png)
+![Cleaned Data with Tier and TAT_business-days](https://github.com/gargi-barman/ecommerce-operations-dashboard/raw/main/Cleaned_Data_Updated.png)
 
 ](/gargi-barman/ecommerce-operations-dashboard/blob/main/Cleaned_Data_Updated.png)
 
