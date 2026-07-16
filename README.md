@@ -165,7 +165,7 @@ Source: [Ecommerce Order & Supply Chain Dataset — Kaggle](https://www.kaggle.c
 
 ## Files
 
-- **Excel Workbook:** [Ecommerce_Operations_Dashboard.xlsx (Google Drive)](https://docs.google.com/spreadsheets/d/1S2EoyPUwlE6q4WN-2xdVAqXcX1_SG_zw/edit?usp=sharing) — *hosted on Drive due to file size (~27MB, over GitHub's 25MB browser upload limit). Use File → Download → Microsoft Excel to get the original .xlsx.*
+- **Excel Workbook:** [Ecommerce_Operations_Dashboard.xlsx (Google Drive)](https://drive.google.com/file/d/1S2EoyPUwlE6q4WN-2xdVAqXcX1_SG_zw/view?usp=sharing) — *hosted on Drive due to file size (~27MB, over GitHub's 25MB browser upload limit). Use File → Download → Microsoft Excel to get the original .xlsx.*
 
 ---
 
